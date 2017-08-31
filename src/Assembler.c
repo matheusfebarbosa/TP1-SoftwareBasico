@@ -48,6 +48,20 @@ int assembler(FILE *in, FILE *out, int *valTable){
 			fprintf(out, "16 ");
 		}else if(strcmp(inst,"JCC")==0){
 			fprintf(out, "17 ");
+		}else if(strcmp(inst,"CAL")==0){
+			fprintf(out, "18 ");
+		}else if(strcmp(inst,"RET")==0){
+			fprintf(out, "19 ");
+		}else if(strcmp(inst,"LAT")==0){
+			fprintf(out, "20 ");
+		}else if(strcmp(inst,"SAI")==0){
+			fprintf(out, "21 ");
+		}else if(strcmp(inst,"DOB")==0){
+			fprintf(out, "22 ");
+		}else if(strcmp(inst,"MET")==0){
+			fprintf(out, "23 ");
+		}else if(strcmp(inst,"JPA")==0){
+			fprintf(out, "24 ");
 		}
 
 		if(opr[0]>'0'+9){

@@ -85,6 +85,34 @@ void interpreter(){
 				if(rc)
 					pc = sb+pc;
 				break;
+			case 18:
+				rx =  pc;
+				pc =  sb + pc;
+				break;
+			case 19:
+				pc = rx;
+				break;
+			case 20:
+				ac = ram[rx];
+				rx = rx + 1;
+				break;
+			case 21:
+				ram[rx] = ac;
+				rx = rx + 1;
+				break;
+			case 22:
+				ram[rx] *= 2;
+				ac = ram[rx];
+				break;
+			case 23:
+				ram[rx] /= 2;
+				ac = ram[rx];
+				break;
+			case 24:
+				if(ac%2==0){
+					pc = sb+pc;	
+				}
+				break;
 		}
 	}
 }
