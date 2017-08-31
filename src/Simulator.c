@@ -4,9 +4,11 @@
 
 typedef int REGISTER;
 
-int ram[1000];
+int ram[256];
 REGISTER pc;
 REGISTER ac = 0;
+REGISTER rc;
+REGISTER rx;
 
 void loader(char *program, int loadPoint){
 	FILE *f =  fopen(program,"r");
@@ -62,6 +64,26 @@ void interpreter(){
 				if(ac==0){
 					pc = sb+pc;	
 				}
+				break;
+			case 12:
+				rx = ram[sb+pc];
+				break;
+			case 13:
+				ram[sb+pc] = rx;
+				break;
+			case 14:
+				ac = ram[rx++];
+				break;
+			case 15:
+				ram[rx++] = ac;
+				break;
+			case 16:
+				rc = ram[sb+pc];
+				break;
+			case 17:
+				rc = rc - 1
+				if(rc)
+					pc = sb+pc;
 				break;
 		}
 	}
