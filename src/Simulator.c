@@ -81,7 +81,7 @@ void interpreter(){
 				rc = ram[sb+pc];
 				break;
 			case 17:
-				rc = rc - 1
+				rc = rc - 1;
 				if(rc)
 					pc = sb+pc;
 				break;
