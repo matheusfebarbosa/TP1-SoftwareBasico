@@ -112,7 +112,7 @@ int process(FILE *in, int *valTable){
 int main(int argc, char *argv[]){
 
 	FILE *in, *out;	
-	int valTable[26];
+	int valTable[58];
 
 	in = fopen(argv[1],"r");
 
