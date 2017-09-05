@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int assembler(FILE *in, FILE *out, int *valTable){
+int parse(FILE *in, FILE *out, int *valTable){
 	char symbol;
 	char inst[4];
 	char opr[8];
@@ -192,7 +192,7 @@ int main(int argc, char *argv[]){
 	in = fopen(argv[1],"r");
 	out = fopen(argv[2],"w");
 
-	if(assembler(in,out,valTable)){
+	if(parse(in,out,valTable)){
 		fprintf(stderr, "Erro ao fazer a montagem\n");
 	}
 
