@@ -10,19 +10,28 @@ REGISTER ac = 0;
 REGISTER rc;
 REGISTER rx;
 
-void loader(char *program, int loadPoint){
+int loader(char *program, int loadPoint){
 	FILE *f =  fopen(program,"r");
+	char flag;
 
 	pc = loadPoint;
 
-	while(fscanf(f,"%d %d", &ram[pc], &ram[pc+1])==2){
-		pc+=2;
+	while(fscanf(f,"%c", &flag) == 1){
+		if(flag == '!'){
+			fscanf(f,"%d %d%*c", &ram[pc], &ram[pc+1]);
+			pc+=2;
+		}else if(flag == '*'){
+			fscanf(f,"%d%*c", &ram[pc]);
+			pc++;
+		}
 	}
 
 	pc = loadPoint;
+
+	return 0;
 }
 
-void interpreter(){
+int interpreter(){
 	int sb,fb;
 	while(ram[pc]!=11){
 		fb = ram[pc];
@@ -64,6 +73,9 @@ void interpreter(){
 				if(ac==0){
 					pc = sb+pc;	
 				}
+				break;
+			case 11:
+				return 0;
 				break;
 			case 12:
 				rx = ram[sb+pc];
@@ -115,14 +127,19 @@ void interpreter(){
 				break;
 		}
 	}
+	return 0;
 }
 
 
 int main(int argc, char *argv[]){
 
-	loader(argv[1],atoi(argv[2]));
+	if(loader(argv[1],atoi(argv[2]))){
+		fprintf(stderr, "Erro no carregamento\n");
+	}
 
-	interpreter();
+	if(interpreter()){
+		fprintf(stderr, "Erro ao executar o programa\n");
+	}
 
 	return 0;
 }
