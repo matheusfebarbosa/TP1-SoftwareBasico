@@ -8,7 +8,7 @@ define(`lb',` ')dnl
 
 define(`inc', `lb LAD $1 
   SAX  
-  SXD $1')
+  SXD $1')dnl
 
 define(`dec', `lb DEC $1')dnl
 
@@ -32,26 +32,15 @@ define(`sub', `lb LAD $1
   SUB $2
   SAD $1')dnl
 
-define(`semaior', `  LAD $1
-  SUB $2
-  JGZ label
-  pushdef(`end_se', `pushdef(`lb',`popdef(`lb')''label`)')dnl
-  pushdef(`ALPHAR', substr(ALPHAR,1))dnl
-  pushdef(`label', translit(`a',ALPHA,ALPHAR))')dnl
-
-define(`semenor', `  LAD $1
-  SUB $2
-  JLZ label
-  pushdef(`end_se', `pushdef(`lb',`popdef(`lb')''label`)')dnl
-  pushdef(`ALPHAR', substr(ALPHAR,1))dnl
-  pushdef(`label', translit(`a',ALPHA,ALPHAR))')dnl
-
-define(`seigual', `  LAD $1
-  SUB $2
-  JZE label
-  pushdef(`end_se', `pushdef(`lb',`popdef(`lb')''label`)')dnl
-  pushdef(`ALPHAR', substr(ALPHAR,1))dnl
-  pushdef(`label', translit(`a',ALPHA,ALPHAR))')dnl
+define(`se', `lb LAD $1
+  SUB $3
+  ifelse($2,menor,`JGZ',$2, maior,`JLZ',$2, igual, `JZE') label
+pushdef(`end_program',`popdef(`end_program')dnl'
+label` DC 0
+end_program')dnl
+pushdef(`end_se', `pushdef(`lb',`popdef(`lb')''label`)dnl')dnl
+pushdef(`ALPHAR', substr(ALPHAR,1))dnl
+pushdef(`label', translit(`a',ALPHA,ALPHAR))dnl')dnl
 
 define(`end_se', `popdef(end_se)')dnl
 
@@ -63,8 +52,8 @@ define(`ler', `lb INP $1')dnl
 
 define(`escrever', `lb OUT $1')dnl
 
-define(`int', `pushdef(`end',`popdef(`end')dnl
+define(`int', `pushdef(`end_program',`popdef(`end_program')dnl
 $1 DC $2
-end')dnl')dnl
+end_program')dnl')dnl
 
-define(`end',`')dnl
+define(`end',`lb HLT  ')dnl
