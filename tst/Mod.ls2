@@ -1,0 +1,13 @@
+  INP A
+  INP B
+  LAD A
+P SUB B
+  JGZ P
+  JZE Q
+  ADD B
+Q SAD A
+  OUT A
+  HLT  
+A DC  0
+B DC  0 
+  END

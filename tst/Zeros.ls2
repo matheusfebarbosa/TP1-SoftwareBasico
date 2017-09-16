@@ -1,0 +1,11 @@
+  INP N
+P DA V
+  LXD P
+  LCD N
+Q SAX 0
+  JCC Q
+  HLT  
+N DC  0
+P DC  0
+V DS  N
+  END
