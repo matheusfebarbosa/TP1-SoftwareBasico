@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-int parse(FILE *in, FILE *out, int *valTable){
+int parse(FILE *in, FILE *out, int *valTable, int n){
 	char symbol;
 	char inst[4];
 	char opr[8];
 	int iCount=0;
 	int jump = 2;
+
+	fprintf(out,"%d\n",n);
 
 	for(iCount=0;iCount<48;iCount++){
 		if(valTable[iCount]!=-1){
@@ -144,17 +146,19 @@ int parse(FILE *in, FILE *out, int *valTable){
 	return 0;
 }
 
-int process(FILE *in, int *valTable){
+int process(FILE *in, int *valTable, int *iCount){
 	char symbol;
 	char inst[4];
 	char opr[8];
-	int iCount=0;
+	int jump = 0;
 
 	while(!feof(in)){
+		(*iCount) += jump;
+
 		fscanf(in,"%c%*c%s",&symbol,inst);
 		
 		if(symbol!=' '){
-			valTable[symbol - 'A'] = iCount;
+			valTable[symbol - 'A'] = (*iCount);
 		}
 
 		if(strcmp(inst,"HLT")==0 || 
@@ -163,7 +167,7 @@ int process(FILE *in, int *valTable){
 			strcmp(inst,"SAI")==0){
 			getc(in);
 			getc(in);
-			iCount+=2;
+			jump = 2;
 			while(getc(in)!='\n');
 			continue;
 		}
@@ -171,13 +175,13 @@ int process(FILE *in, int *valTable){
 		fscanf(in,"%s%*c",opr);
 
 		if(strcmp(inst,"DC")==0){
-			iCount++;
+			jump = 1;
 		}else if(strcmp(inst,"DA")==0){
-			iCount++;
+			jump = 1;
 		}else if(strcmp(inst,"DS")==0){
-			iCount+= (int) atoi(opr);
+			jump = (int) atoi(opr);
 		}else{
-			iCount+=2;
+			jump = 2;
 		}
 		
 	}
@@ -188,15 +192,17 @@ int process(FILE *in, int *valTable){
 int main(int argc, char *argv[]){
 
 	FILE *in, *out;	
-	int valTable[58],i;
+	int valTable[58],iCount=0;
 
-	for(i=0;i<58;i++){
-		valTable[i] = -1;
+	for(iCount=0;iCount<58;iCount++){
+		valTable[iCount] = -1;
 	}
+
+	iCount = 0;
 
 	in = fopen(argv[1],"r");
 
-	if(process(in,valTable)){
+	if(process(in,valTable,&iCount)){
 		fprintf(stderr, "Erro ao fazer ao fazer o pré-processamento\n");
 	}
 
@@ -205,7 +211,7 @@ int main(int argc, char *argv[]){
 	in = fopen(argv[1],"r");
 	out = fopen(argv[2],"w");
 
-	if(parse(in,out,valTable)){
+	if(parse(in,out,valTable,iCount)){
 		fprintf(stderr, "Erro ao fazer a montagem\n");
 	}
 
