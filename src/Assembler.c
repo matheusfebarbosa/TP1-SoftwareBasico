@@ -9,6 +9,16 @@ int parse(FILE *in, FILE *out, int *valTable){
 	int iCount=0;
 	int jump = 2;
 
+	for(iCount=0;iCount<48;iCount++){
+		if(valTable[iCount]!=-1){
+			fprintf(out,"%c %d\n", iCount+'A', valTable[iCount]);
+		}
+	}
+
+	fprintf(out, "#\n");
+
+	iCount = 0;
+
 	while(!feof(in)){
 		fscanf(in,"%c%*c%s",&symbol,inst);
 		iCount += jump;
@@ -86,8 +96,12 @@ int parse(FILE *in, FILE *out, int *valTable){
 			fprintf(out, "!17 ");
 			jump = 2;
 		}else if(strcmp(inst,"CAL")==0){
-			fprintf(out, "!18 ");
+			if(valTable[opr[0] - 'A']!=-1)
+				fprintf(out, "!18 %02d\n", (int) valTable[opr[0] - 'A'] - iCount);
+			else
+				fprintf(out, "$%c\n",opr[0]);
 			jump = 2;
+			continue;
 		}else if(strcmp(inst,"DOB")==0){
 			fprintf(out, "!22 ");
 			jump = 2;
@@ -161,15 +175,10 @@ int process(FILE *in, int *valTable){
 		}else if(strcmp(inst,"DA")==0){
 			iCount++;
 		}else if(strcmp(inst,"DS")==0){
-			if(opr[0]>'0'+9){
-				iCount+= (int) valTable[opr[0] - 'A'] - iCount;
-			}else{
-				iCount+= (int) atoi(opr);
-			}
+			iCount+= (int) atoi(opr);
 		}else{
 			iCount+=2;
 		}
-
 		
 	}
 
@@ -179,7 +188,11 @@ int process(FILE *in, int *valTable){
 int main(int argc, char *argv[]){
 
 	FILE *in, *out;	
-	int valTable[58];
+	int valTable[58],i;
+
+	for(i=0;i<58;i++){
+		valTable[i] = -1;
+	}
 
 	in = fopen(argv[1],"r");
 
