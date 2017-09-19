@@ -6,4 +6,4 @@ Assembler: Assembler.c
 Linker:
 	gcc Linker.c -o R2
 clean:
-	rm M2 S2 R2
+	rm R2 S2 M2
