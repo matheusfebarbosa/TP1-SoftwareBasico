@@ -105,11 +105,11 @@ int interpreter(){
 				pc = rx;
 				break;
 			case 20:
-				ac = ram[rx];
+				ac = ram[ram[rx]];
 				rx = rx + 1;
 				break;
 			case 21:
-				ram[rx] = ac;
+				ram[ram[rx]] = ac;
 				rx = rx + 1;
 				break;
 			case 22:

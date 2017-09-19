@@ -98,7 +98,7 @@ int parse(FILE *in, FILE *out, int *valTable){
 			fprintf(out, "!24 ");
 			jump = 2;
 		}else if(strcmp(inst,"DC")==0){
-			fprintf(out, "*00\n");
+			fprintf(out, "*%s\n",opr);
 			jump = 1;
 			continue;
 		}else if(strcmp(inst,"DA")==0){
@@ -123,7 +123,7 @@ int parse(FILE *in, FILE *out, int *valTable){
 		if(opr[0]>'0'+9){
 			fprintf(out, "%02d\n", (int) valTable[opr[0] - 'A'] - iCount);
 		}else{
-			fprintf(out, "%02d\n", (int) atoi(opr));
+			fprintf(out, "%02d\n", (int) atoi(opr) - iCount);
 		}	
 	}
 
