@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int buildGlobalTable(FILE *in, int *valTable, int start){
 	int n, fsize;
@@ -6,18 +7,17 @@ int buildGlobalTable(FILE *in, int *valTable, int start){
 
 	fscanf(in,"%d\n",&fsize);
 
-	while(1){
-		fscanf(in,"%c",&label); 
+	while(fscanf(in,"%c",&label) == 1){
 		
 		if(label=='#')
-			break;
+			return fsize;
 
 		fscanf(in,"%d\n",&n);
 
 		valTable[label - 'A'] = start + n;
 	}
 
-	return fsize;
+	return 0;
 }
 
 int link(FILE *in, FILE *out, int *valTable, int start){
@@ -48,6 +48,9 @@ int link(FILE *in, FILE *out, int *valTable, int start){
 		}else if(flag ==  '$'){
 			fscanf(in,"%c %d\n", &flag, &vb);
 			fprintf(out,"!18 %d\n", valTable[flag - 'A'] + vb - start );
+		}else{
+			fprintf(stderr, "Error!!!\nUnknown labelling char\n");
+			exit(1);
 		}
 	}
 
@@ -58,6 +61,11 @@ int main(int argc, char *argv[]){
 
 	FILE *in, *out;	
 	int valTable[58],i,start=0;
+
+	if(argc<3){
+		fprintf(stderr, "You must at least inform one input and one output file!!!\n");
+		return 0;
+	}
 
 	for(i=0;i<58;i++){
 		valTable[i] = -1;
@@ -70,7 +78,7 @@ int main(int argc, char *argv[]){
 		start += buildGlobalTable(in,valTable,start);
 
 		if(!start){
-			fprintf(stderr, "Erro ao fazer ao fazer o pré-processamento dos arquivos\n");
+			fprintf(stderr, "Error!!!\nFile processing unfinished\n");
 		}
 
 		fclose(in);
@@ -86,7 +94,7 @@ int main(int argc, char *argv[]){
 		start += link(in, out, valTable, start);
 
 		if(!start){
-			fprintf(stderr, "Erro ao fazer ao fazer a linkagem\n");
+			fprintf(stderr, "Error!!!\nLinking failed\n");
 		}
 
 		fclose(in);

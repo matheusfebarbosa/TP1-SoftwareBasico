@@ -133,7 +133,8 @@ int parse(FILE *in, FILE *out, int *valTable, int n){
 			}
 			continue;
 		}else{
-			continue;
+			fprintf(stderr, "Error!!!\nUnknown instruction\n");
+			exit(1);
 		}
 		
 		if(opr[0]>'0'+9){
@@ -203,7 +204,7 @@ int main(int argc, char *argv[]){
 	in = fopen(argv[1],"r");
 
 	if(process(in,valTable,&iCount)){
-		fprintf(stderr, "Erro ao fazer ao fazer o pré-processamento\n");
+		fprintf(stderr, "Error!!!\nFile processing failed\n");
 	}
 
 	fclose(in);
@@ -212,7 +213,7 @@ int main(int argc, char *argv[]){
 	out = fopen(argv[2],"w");
 
 	if(parse(in,out,valTable,iCount)){
-		fprintf(stderr, "Erro ao fazer a montagem\n");
+		fprintf(stderr, "Error!!!\nParsing failed\n");
 	}
 
 	fclose(in);

@@ -125,6 +125,10 @@ int interpreter(){
 					pc = sb+pc;	
 				}
 				break;
+			default:
+				fprintf(stderr, "Error!!!\nUnknown opcode\n");
+				exit(1);
+				break;
 		}
 	}
 	return 0;
@@ -134,11 +138,11 @@ int interpreter(){
 int main(int argc, char *argv[]){
 
 	if(loader(argv[1],atoi(argv[2]))){
-		fprintf(stderr, "Erro no carregamento\n");
+		fprintf(stderr, "Error!!!\n Loading failed\n");
 	}
 
 	if(interpreter()){
-		fprintf(stderr, "Erro ao executar o programa\n");
+		fprintf(stderr, "Execution Error!!!\n");
 	}
 
 	return 0;
