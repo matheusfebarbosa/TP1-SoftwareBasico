@@ -1,10 +1,10 @@
 #include <stdio.h>
 
 int buildGlobalTable(FILE *in, int *valTable, int start){
-	int n;
+	int n, fsize;
 	char label;
 
-	fscanf(in,"%d",&n);
+	fscanf(in,"%d\n",&fsize);
 
 	while(1){
 		fscanf(in,"%c",&label); 
@@ -12,12 +12,12 @@ int buildGlobalTable(FILE *in, int *valTable, int start){
 		if(label=='#')
 			break;
 
-		fscanf(in,"%d",&n);
+		fscanf(in,"%d\n",&n);
 
 		valTable[label - 'A'] = start + n;
 	}
 
-	return n;
+	return fsize;
 }
 
 int link(FILE *in, FILE *out, int *valTable, int start){
@@ -37,14 +37,17 @@ int link(FILE *in, FILE *out, int *valTable, int start){
 
 	while(fscanf(in,"%c", &flag) == 1){
 		if(flag == '!'){
-			fscanf(in,"%d %d%*c", &va, &vb);
+			fscanf(in,"%d %d\n", &va, &vb);
 			fprintf(out, "!%d %d\n", va, vb);
 		}else if(flag == '*'){
-			fscanf(in,"%d%*c", &va);
+			fscanf(in,"%d\n", &va);
 			fprintf(out,"*%d\n", va);
+		}else if(flag ==  '&'){
+			fscanf(in,"%d\n", &va);
+			fprintf(out,"*%d\n", va + start);
 		}else if(flag ==  '$'){
-			fscanf(in,"%c", &flag);
-			fprintf(out,"!18 %d\n", valTable[flag - 'A']);
+			fscanf(in,"%c %d\n", &flag, &vb);
+			fprintf(out,"!18 %d\n", valTable[flag - 'A'] + vb - start );
 		}
 	}
 

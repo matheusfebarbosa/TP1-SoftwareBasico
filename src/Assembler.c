@@ -101,7 +101,7 @@ int parse(FILE *in, FILE *out, int *valTable, int n){
 			if(valTable[opr[0] - 'A']!=-1)
 				fprintf(out, "!18 %02d\n", (int) valTable[opr[0] - 'A'] - iCount);
 			else
-				fprintf(out, "$%c\n",opr[0]);
+				fprintf(out, "$%c %d\n",opr[0], -iCount);
 			jump = 2;
 			continue;
 		}else if(strcmp(inst,"DOB")==0){
@@ -118,7 +118,7 @@ int parse(FILE *in, FILE *out, int *valTable, int n){
 			jump = 1;
 			continue;
 		}else if(strcmp(inst,"DA")==0){
-			fprintf(out, "*%02d\n", (int) valTable[opr[0] - 'A']);
+			fprintf(out, "&%02d\n", (int) valTable[opr[0] - 'A']);
 			jump = 1;
 			continue;
 		}else if(strcmp(inst,"DS")==0){
