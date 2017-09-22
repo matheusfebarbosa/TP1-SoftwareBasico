@@ -45,6 +45,16 @@ int parse(FILE *in, FILE *out, int *valTable, int n){
 			jump = 2;
 			while(getc(in)!='\n');
 			continue;
+		}else if(strcmp(inst,"SAX")==0){
+			fprintf(out, "!15 00\n");
+			jump = 2;
+			while(getc(in)!='\n');
+			continue;
+		}else if(strcmp(inst,"LAX")==0){
+			fprintf(out, "!14 00\n");
+			jump = 2;
+			while(getc(in)!='\n');
+			continue;
 		}
 
 		fscanf(in,"%s%*c",opr);
@@ -84,12 +94,6 @@ int parse(FILE *in, FILE *out, int *valTable, int n){
 			jump = 2;
 		}else if(strcmp(inst,"SXD")==0){
 			fprintf(out, "!13 ");
-			jump = 2;
-		}else if(strcmp(inst,"LAX")==0){
-			fprintf(out, "!14 ");
-			jump = 2;
-		}else if(strcmp(inst,"SAX")==0){
-			fprintf(out, "!15 ");
 			jump = 2;
 		}else if(strcmp(inst,"LCD")==0){
 			fprintf(out, "!16 ");
@@ -133,8 +137,7 @@ int parse(FILE *in, FILE *out, int *valTable, int n){
 			}
 			continue;
 		}else{
-			fprintf(stderr, "Error!!!\nUnknown instruction\n");
-			exit(1);
+			return 0;
 		}
 		
 		if(opr[0]>'0'+9){

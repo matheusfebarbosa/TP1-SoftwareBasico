@@ -38,19 +38,16 @@ int link(FILE *in, FILE *out, int *valTable, int start){
 	while(fscanf(in,"%c", &flag) == 1){
 		if(flag == '!'){
 			fscanf(in,"%d %d\n", &va, &vb);
-			fprintf(out, "!%d %d\n", va, vb);
+			fprintf(out, "%02d %02d\n", va, vb);
 		}else if(flag == '*'){
 			fscanf(in,"%d\n", &va);
-			fprintf(out,"*%d\n", va);
+			fprintf(out,"%02d\n", va);
 		}else if(flag ==  '&'){
 			fscanf(in,"%d\n", &va);
-			fprintf(out,"*%d\n", va + start);
+			fprintf(out,"%02d\n", va + start);
 		}else if(flag ==  '$'){
 			fscanf(in,"%c %d\n", &flag, &vb);
-			fprintf(out,"!18 %d\n", valTable[flag - 'A'] + vb - start );
-		}else{
-			fprintf(stderr, "Error!!!\nUnknown labelling char\n");
-			exit(1);
+			fprintf(out,"18 %02d\n", valTable[flag - 'A'] + vb - start );
 		}
 	}
 

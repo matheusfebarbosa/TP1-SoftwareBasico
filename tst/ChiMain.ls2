@@ -1,0 +1,12 @@
+  INP A
+  INP B
+  CAL F
+  DA A
+  DA B
+  SAD C
+  OUT C
+  HLT  
+A DC 0
+B DC 0
+C DC 0
+  END 

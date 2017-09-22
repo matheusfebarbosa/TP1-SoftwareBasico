@@ -12,18 +12,13 @@ REGISTER rx;
 
 int loader(char *program, int loadPoint){
 	FILE *f =  fopen(program,"r");
-	char flag;
+	char buffer[10];
+	char *token;
 
 	pc = loadPoint;
 
-	while(fscanf(f,"%c", &flag) == 1){
-		if(flag == '!'){
-			fscanf(f,"%d %d%*c", &ram[pc], &ram[pc+1]);
-			pc+=2;
-		}else if(flag == '*'){
-			fscanf(f,"%d%*c", &ram[pc]);
-			pc++;
-		}
+	while(fscanf(f,"%d", &ram[pc++]) > 0){
+
 	}
 
 	pc = loadPoint;
@@ -113,12 +108,12 @@ int interpreter(){
 				rx = rx + 1;
 				break;
 			case 22:
-				ram[rx] *= 2;
-				ac = ram[rx];
+				ram[sb + pc] *= 2;
+				ac = ram[sb + pc];
 				break;
 			case 23:
-				ram[rx] /= 2;
-				ac = ram[rx];
+				ram[sb + pc] /= 2;
+				ac = ram[sb + pc];
 				break;
 			case 24:
 				if(ac%2==0){
@@ -126,8 +121,7 @@ int interpreter(){
 				}
 				break;
 			default:
-				fprintf(stderr, "Error!!!\nUnknown opcode\n");
-				exit(1);
+				return 0;
 				break;
 		}
 	}

@@ -1,0 +1,24 @@
+F LAI
+  SAD D
+  LAI  
+  SAD E
+T SUB D
+  JGZ Y
+  JZE R
+  LAD E
+  SAD X
+N SUB D
+  JGZ O
+  DOB X
+  JMP N
+O MET X
+  LAD D
+  SUB X
+  SAD D
+  LAD E
+  JMP T
+Y LAD D 
+R RET  
+D DC 0
+E DC 0
+  END  
